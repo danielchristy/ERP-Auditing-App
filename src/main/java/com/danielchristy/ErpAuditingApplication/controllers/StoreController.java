@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/stores")
+@RequestMapping("/store")
 public class StoreController {
 
     @Autowired
@@ -22,8 +22,9 @@ public class StoreController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Store> getStoreById(@PathVariable Long id) {
-        Store store = storeService.findById(id);
-        return store != null ? ResponseEntity.ok(store) : ResponseEntity.notFound().build();
+        return storeService.findById(id)
+                .map(ResponseEntity::ok).
+                orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -33,7 +34,7 @@ public class StoreController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Store> updateStore(@PathVariable Long id, @RequestBody Store store) {
-        if (storeService.findById(id) == null) {
+        if (storeService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         store.setId(id);

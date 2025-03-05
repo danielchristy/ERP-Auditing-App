@@ -27,8 +27,8 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public void deleteById(Long company) {
-        companyRepository.delete(company);
+    public void deleteById(Long id) {
+        companyRepository.deleteById(id);
     }
 
     public Optional<Company> findByEin(String ein) {

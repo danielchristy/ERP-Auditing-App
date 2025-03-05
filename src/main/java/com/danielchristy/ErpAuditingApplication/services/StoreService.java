@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoreService {
@@ -17,8 +18,8 @@ public class StoreService {
         return storeRepository.findAll();
     }
 
-    public Store findById(Long id) {
-        return storeRepository.findById(id).orElse(null);
+    public Optional<Store> findById(Long id) {
+        return storeRepository.findById(id);
     }
 
     public Store save(Store store) {
