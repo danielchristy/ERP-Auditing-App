@@ -1,6 +1,8 @@
 package com.danielchristy.ErpAuditingApplication.controllers;
 
+import com.danielchristy.ErpAuditingApplication.entities.Company;
 import com.danielchristy.ErpAuditingApplication.entities.Store;
+import com.danielchristy.ErpAuditingApplication.services.CompanyService;
 import com.danielchristy.ErpAuditingApplication.services.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private CompanyService companyService;
 
     @GetMapping
     public List<Store> getAllStores() {
@@ -29,6 +33,8 @@ public class StoreController {
 
     @PostMapping
     public Store createStore(@RequestBody Store store) {
+        Company company = companyService.findById(store.getCompany().getId()).orElse(null);
+        store.setCompany(company);
         return storeService.save(store);
     }
 

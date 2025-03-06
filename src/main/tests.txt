@@ -1,0 +1,389 @@
+http://localhost:8080/company
+http://localhost:8080/user
+http://localhost:8080/store
+http://localhost:8080/store-inventory
+http://localhost:8080/warehouse
+http://localhost:8080/warehouse-inventory
+http://localhost:8080/vendor
+http://localhost:8080/item
+http://localhost:8080/invoice
+
+
+
+-- Company --
+	GET /company – Retrieve all companies ☑️
+		http://localhost:8080/company
+
+
+	POST /company – Create a new company ☑️
+		http://localhost:8080/company
+
+[1] 200 OK
+{
+    "ein" : "12-3456789",
+    "name" : "Christy's Cripy Coding Company",
+    "totalAssets" : 0.01
+}
+
+[2] 200 OK
+{
+    "ein" : "00-0000001",
+    "name" : "Spencer's Spectacular Scripts",
+    "totalAssets" : 1234567.89
+}
+
+[3] 200 OK
+{
+    "ein" : "01-2345678",
+    "name" : "Delete Test",
+    "totalAssets" : 17.38
+}
+
+
+	GET /company/{id} – Retrieve a specific company by ID ☑️
+		http://localhost:8080/company/1
+		http://localhost:8080/company/3
+
+
+	PUT /company/{id} – Update a specific company ☑️
+		http://localhost:8080/company/2
+[1] 200 OK
+{
+    "ein" : "00-0000001",
+    "name" : "Spencer's Spectacular Scripts",
+    "totalAssets" : 1234567.99
+}
+
+
+	DELETE /company/{id} – Delete a specific company ☑️
+		http://localhost:8080/company/3
+204 No Content
+
+
+-- User --
+	GET /user – Retrieve all users ❌
+		http://localhost:8080/user
+
+
+	POST /user – Create a new user ❌
+		http://localhost:8080/user
+
+[1] 500 Internal Server Error
+{
+    "employeeId" : "ACCT-001",
+    "password" : "donnie1!",
+    "firstName" : "Donnie",
+    "lastName" : "Borel",
+    "email" : "donniedoesmath25@gmail.com",
+    "phone" : "123-456-7890",
+    "role" : "Controller"
+}
+
+
+	GET /user/{id} – Retrieve a specific user by ID
+	PUT /user/{id} – Update a specific user
+	DELETE /user/{id} – Delete a specific user
+
+
+
+-- Store --
+	GET /store – Retrieve all stores ☑️
+		http://localhost:8080/store
+
+
+	POST /store – Create a new store ☑️
+		http://localhost:8080/store
+[1] 200 OK
+{
+    "companyId" : 1,
+    "locationId" : "ST-USA-MS-OXFORD-0001",
+    "locationCountry" : "USA",
+    "locationState" : "MS",
+    "locationCity" : "OXFORD",
+    "storeNumber" : 1
+}
+
+[2] 200 OK
+{
+    "companyId" : 2,
+    "locationId" : "ST-USA-MS-TUPELO-2",
+    "locationCountry" : "USA",
+    "locationState" : "MS",
+    "locationCity" : "TUPELO",
+    "storeNumber" : 2
+}
+
+[3] 400 Bad Request (store # 0xx doesn't work)
+{
+    "companyId" : 1,
+    "locationId" : "ST-USA-MS-Jackson-01",
+    "locationCountry" : "USA",
+    "locationState" : "MS",
+    "locationCity" : "JACKSON",
+    "storeNumber" : 01
+}
+
+
+                                    FIX:
+                            [1] 200 OK
+                            {
+                                "company": {
+                                    "id": 1
+                                },
+                                "locationId": "ST-USA-MS-OXFORD-1",
+                                "locationCountry": "USA",
+                                "locationState": "MS",
+                                "locationCity": "OXFORD",
+                                "storeNumber": 1
+                            }
+                             - output:
+                            {
+                                "id": 1,
+                                "company": {
+                                    "id": 1,
+                                    "ein": "12-3456789",
+                                    "name": "Christy's Crispy Coding Company",
+                                    "totalAssets": 0.01
+                                },
+                                "locationId": "ST-USA-MS-OXFORD-1",
+                                "locationCountry": "USA",
+                                "locationState": "MS",
+                                "locationCity": "OXFORD",
+                                "storeNumber": "1"
+                            }
+
+
+
+	GET /store/{id} – Retrieve a specific store by ID ☑️ **check why company is returning null**
+		http://localhost:8080/store/1
+		http://localhost:8080/store/2
+[1] 200 OK
+{
+    "id": 1,
+    "company": null,
+    "locationId": "ST-USA-MS-OXFORD-0001",
+    "locationCountry": "USA",
+    "locationState": "MS",
+    "locationCity": "OXFORD",
+    "storeNumber": "1"
+}
+
+[2] 200 OK
+{
+    "id": 2,
+    "company": null,
+    "locationId": "ST-USA-MS-TUPELO-2",
+    "locationCountry": "USA",
+    "locationState": "MS",
+    "locationCity": "TUPELO",
+    "storeNumber": "2"
+}
+
+
+	PUT /store/{id} – Update a specific store ☑️
+		http://localhost:8080/store
+[1] 200 OK
+{
+    "companyId" : 1,
+    "locationId" : "ST-USA-MS-OXFORD-1",
+    "locationCountry" : "USA",
+    "locationState" : "MS",
+    "locationCity" : "BATESVILLE",
+    "storeNumber" : 1
+}
+
+
+	DELETE /store/{id} – Delete a specific store ☑️
+		http://localhost:8080/store/1
+204 No Content
+
+
+
+-- Warehouse --
+	GET /warehouse – Retrieve all warehouses ☑️
+		http://localhost:8080/warehouse
+
+
+	POST /warehouse – Create a new warehouse ☑️
+		http://localhost:8080/warehouse
+[1] 200 OK
+{
+    "companyId" : 1,
+    "locationId" : "WH-NETHERLANDS-NORTHHOLLAND-AMSTERDAM-12",
+    "locationCountry" : "NETHERLANDS",
+    "locationState" : "NORTH HOLLAND",
+    "locationCity" : "AMSTERDAM",
+    "warehouseNumber" : 12
+}
+
+[2] 200 OK
+{
+    "id": 2,
+    "company": null,
+    "locationId": "WH-SOUTHKOREA-BUSON-BUSON-95",
+    "locationCountry": "SOUTH KOREA",
+    "locationState": "BUSON",
+    "locationCity": "BUSON",
+    "warehouseNumber": "95"
+}
+
+	GET /warehouse/{id} – Retrieve a specific warehouse by ID ☑️
+		http://localhost:8080/warehouse/2
+[1] 200 OK
+{
+    "id": 2,
+    "company": null,
+    "locationId": "WH-SOUTHKOREA-BUSON-BUSON-95",
+    "locationCountry": "SOUTH KOREA",
+    "locationState": "BUSON",
+    "locationCity": "BUSON",
+    "warehouseNumber": "95"
+}
+
+
+	PUT /warehouse/{id} – Update a specific warehouse ☑️
+		http://localhost:8080/warehouse/1
+[1] 200 OK
+{
+    "id": 1,
+    "company": null,
+    "locationId": "WH-NETHERLANDS-NORTHHOLLAND-AMSTERDAM-12",
+    "locationCountry": "NETHERLANDS",
+    "locationState": "NORTH HOLLAND",
+    "locationCity": "AMSTERDAM",
+    "warehouseNumber": "79"
+}
+
+	DELETE /warehouse/{id} – Delete a specific warehouse ☑️
+		http://localhost:8080/warehouse/1
+204 No Content
+
+
+
+
+-- Vendor --
+	GET /vendor – Retrieve all vendors ☑️
+		http://localhost:8080/vendor
+
+	POST /vendor – Create a new vendor ☑️
+		http://localhost:8080/vendor
+		http://localhost:8080/vendor
+[1] 200 OK
+{
+    "id": 1,
+    "vendorId": "VND-01234",
+    "name": "SYSCO",
+    "country": "INTERNATIONAL",
+    "state": "",
+    "city": "",
+    "contactName": "JOE DIRT",
+    "contactInfo": "123-456-7890, joedirt@sysco.com"
+}
+
+[2] 200 OK
+{
+    "id": 2,
+    "vendorId": "VND-01234",
+    "name": "USA KITCHEN SUPPLIES",
+    "country": "USA",
+    "state": "DELAWARE",
+    "city": "DETROIT",
+    "contactName": "CHARLES XAVIER",
+    "contactInfo": "123-867-5309, xmen@usaks.com"
+}
+
+	GET /vendor/{id} – Retrieve a specific vendor by ID ☑️
+		http://localhost:8080/vendor/1
+		http://localhost:8080/vendor/2
+
+
+	PUT /vendor/{id} – Update a specific vendor ☑️
+		http://localhost:8080/vendor/2
+[1] 200 OK
+{
+    "id": 2,
+    "vendorId": "VND-01234",
+    "name": "USA KITCHEN SUPPLIES",
+    "country": "USA",
+    "state": "DELAWARE",
+    "city": "DETROIT",
+    "contactName": "DAVID HALLER",
+    "contactInfo": "123-867-5309, iamlegion@usaks.com"
+}
+
+
+	DELETE /vendor/{id} – Delete a specific vendor ☑️
+		http://localhost:8080/vendor/1
+204 No Content
+
+
+-- Item --
+	GET /item – Retrieve all items ☑️
+		http://localhost:8080/item
+
+
+	POST /item – Create a new item ☑️
+		http://localhost:8080/item
+
+[1] 200 OK
+{
+    "id": 1,
+    "vendor": null,
+    "invoiceNumber": "",
+    "itemReceivedDate": "2025-03-06",
+    "itemCategory": "KITCHEN",
+    "itemDescription": "MICROWAVE",
+    "itemCost": 1000.01,
+    "serialNumber": "LGN-1985-2019",
+    "transferNumber": "0",
+    "transferDate": null
+}
+
+[2] 200 OK
+{
+    "id": 2,
+    "vendor": null,
+    "invoiceNumber": "",
+    "itemReceivedDate": "1994-08-16",
+    "itemCategory": "STORAGE",
+    "itemDescription": "HARD DRIVE",
+    "itemCost": 30,
+    "serialNumber": "LGN-1994-0816",
+    "transferNumber": "0",
+    "transferDate": null
+}
+
+
+	GET /item/{id} – Retrieve a specific item by ID ☑️
+		http://localhost:8080/item/1
+		http://localhost:8080/item/2
+
+
+	PUT /item/{id} – Update a specific item ☑️
+		http://localhost:8080/item/2
+
+[1] 200 OK
+{
+    "id": 2,
+    "vendor": null,
+    "invoiceNumber": "",
+    "itemReceivedDate": "1994-08-16",
+    "itemCategory": "STORAGE",
+    "itemDescription": "HARD DRIVE",
+    "itemCost": 30.00,
+    "serialNumber": "LGN-1994-0816",
+    "transferNumber": "1",
+    "transferDate": "2025-03-06"
+}
+	DELETE /item/{id} – Delete a specific item ☑️
+		http://localhost:8080/item/1
+204 No Content
+
+
+
+-- Invoice --
+	GET /invoice – Retrieve all invoices
+	POST /invoice – Create a new invoice
+	GET /invoice/{id} – Retrieve a specific invoice by ID
+	PUT /invoice/{id} – Update a specific invoice
+	DELETE /invoice/{id} – Delete a specific invoice
