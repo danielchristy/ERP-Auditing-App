@@ -3,6 +3,8 @@ package com.danielchristy.ErpAuditingApplication.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -14,10 +16,16 @@ public class Company {
 
     private String ein;
     private String name;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employees;
+
     private BigDecimal totalAssets;
 
 
-    public Company() {}
+    public Company() {
+        this.employees = new ArrayList<>();
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -41,6 +49,14 @@ public class Company {
 
     public String getName() {
         return name;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
     public void setTotalAssets(BigDecimal totalAssets) {

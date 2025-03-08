@@ -3,8 +3,8 @@ package com.danielchristy.ErpAuditingApplication.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "employee")
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class User {
     private String role;
 
 
-    public User() {}
+    public Employee() {}
 
     public void setId(Long id) {
         this.id = id;
